@@ -1,1 +1,0 @@
-{"_invocation_id": "a9cf4a98-569a-4533-ae1b-79eebbccdb6d", "linked": {"0": {"name": "model.my_databricks_project.silver_cleaned_dpt", "type": "model", "succ": [2]}, "1": {"name": "model.my_databricks_project.bronze_raw_dpt", "type": "model", "succ": [0]}, "2": {"name": "model.my_databricks_project.gold_summary_dpt", "type": "model"}}}
