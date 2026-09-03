@@ -1,0 +1,21 @@
+emp_id,first_name,last_name,email,department,salary,hire_date,status
+E001,  Ali ,Khan,ali.khan@company.com,IT,85000.00,2022-01-15,Active
+E002,Sara,Ahmed,sara.a@company.com,HR,65000.00,2021-06-20,Active
+E003,USMAN,MALIK,usman.m@company.com,Finance,72000.50,2023-03-10,ACTIVE
+E004,Bilal,Sheikh,bilal.s@company.com,IT,90000.00,2020-11-01,Inactive
+E005,Ayesha,Raza,ayesha.r@company.com,Marketing,58000.00,2022-08-12,Active
+E006,  Hamza ,Iqbal,hamza.i@company.com,IT,82000.00,2023-01-05,Active
+E007,Zainab,Bibi,zainab.b@company.com,Finance,71000.00,2021-09-15,Active
+E008,Omer,Farooq,omer.f@company.com,HR,60000.00,2022-04-18,INACTIVE
+E009,Fatima,Shah,fatima.s@company.com,Marketing,62000.00,2023-05-22,Active
+E010,Hassan, Tariq ,hassan.t@company.com,IT,95000.00,2019-12-01,Active
+E011,Sana,Mir,sana.m@company.com,Finance,76000.00,2021-02-14,Active
+E012,Tariq,Jameel,tariq.j@company.com,IT,88000.00,2022-10-30,Active
+E013,Nida, Yasmeen ,nida.y@company.com,HR,64000.00,2023-07-01,Active
+E014,Asad,Chaudhry,asad.c@company.com,Marketing,59000.00,2020-05-19,Inactive
+E015,Mahnoor,Soomro,mahnoor.s@company.com,IT,91000.00,2021-11-11,Active
+E016,Fahad,Mustafa,fahad.m@company.com,Finance,80000.00,2022-03-01,ACTIVE
+E017,  Rabia ,Anum,rabia.a@company.com,HR,63000.00,2023-02-28,Active
+E018,Imran,Siddiqui,imran.s@company.com,IT,87000.00,2020-08-14,Active
+E019,Hira,Mani,hira.m@company.com,Marketing,61000.00,2022-09-09,Active
+E020,Waqas,Zafar,waqas.z@company.com,IT,84000.00,2023-04-17,Active
