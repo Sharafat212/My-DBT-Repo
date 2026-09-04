@@ -16,4 +16,17 @@ clean-targets:
 
 models:
   my_databricks_project:
-    +materialized: table
+    # 1. Bronze folder ke saare models source_db mein jayein
+    bronze:
+      +schema: source_db
+      +materialized: table
+
+    # 2. Silver folder ke saare models EXACT silver_db mein jayein
+    silver:
+      +schema: silver_db
+      +materialized: table
+
+    # 3. Gold folder ke saare models EXACT gold_db mein jayein
+    gold:
+      +schema: gold_db
+      +materialized: table
