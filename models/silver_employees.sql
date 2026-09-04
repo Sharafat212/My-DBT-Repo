@@ -9,8 +9,11 @@ with raw_source as (
     from workspace.source_db.source_raw_data
     
     {% if is_incremental() %}
-      -- Strictly greater than (>) use karein taake purana data re-process na ho
-      where cast(join_date as date) > (select coalesce(max(join_date), '1900-01-01') from {{ this }})
+      -- Fix: String literal ko explicitly DATE cast karein taake comparison exact ho
+      where cast(join_date as date) > (
+          select coalesce(max(cast(join_date as date)), cast('1900-01-01' as date)) 
+          from {{ this }}
+      )
     {% endif %}
 ),
 
