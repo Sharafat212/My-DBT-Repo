@@ -9,8 +9,8 @@ with raw_source as (
     from workspace.source_db.source_raw_data
     
     {% if is_incremental() %}
-      -- Sirf naye added records pick karega based on max join_date / ID
-      where join_date >= (select coalesce(max(join_date), '1900-01-01') from {{ this }})
+      -- Strictly greater than (>) use karein taake purana data re-process na ho
+      where cast(join_date as date) > (select coalesce(max(join_date), '1900-01-01') from {{ this }})
     {% endif %}
 ),
 
@@ -20,7 +20,7 @@ cleaned_data as (
         {{ clean_text('employee_name') }} as employee_name,
         {{ clean_text('department') }} as department,
         {{ handle_null_amount('salary') }} as salary,
-        join_date
+        cast(join_date as date) as join_date
     from raw_source
     where id is not null 
       and employee_name is not null
@@ -38,6 +38,6 @@ select
     employee_name,
     department,
     salary,
-    cast(join_date as date) as join_date
+    join_date
 from deduplicated_data
 where row_num = 1
