@@ -1,11 +1,17 @@
 {{ config(
-    materialized='table',
+    materialized='incremental',
+    unique_key='id',
     schema='silver_db'
 ) }}
 
 with raw_source as (
     select * 
     from workspace.source_db.source_raw_data
+    
+    {% if is_incremental() %}
+      -- Sirf naye added records pick karega based on max join_date / ID
+      where join_date >= (select coalesce(max(join_date), '1900-01-01') from {{ this }})
+    {% endif %}
 ),
 
 cleaned_data as (
