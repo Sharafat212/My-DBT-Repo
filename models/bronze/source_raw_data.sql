@@ -36,7 +36,8 @@ with raw_data as (
     select null, null, 'Finance', null, null union all
     select 122, 'Kamran', null, 73000, '2023-01-01' union all
     select null, null, 'Marketing', 60000, '2022-02-02' union all 
-    select 123, 'Fawad Khan', 'Engineering', 95000, '2015-01-01'
+    select 123, 'Fawad Khan', 'Engineering', 95000, '2015-01-01' union all
+    select 124, 'Sharafat Ali', 'Data_Engineer',195000, '2026-08-17'
 )
 
 select 
