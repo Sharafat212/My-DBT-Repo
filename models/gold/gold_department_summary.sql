@@ -1,3 +1,8 @@
+{{ config(
+    materialized='table',
+    schema='gold_db'
+) }}
+
 with silver_data as (
     select * 
     from {{ ref('silver_employees') }}
