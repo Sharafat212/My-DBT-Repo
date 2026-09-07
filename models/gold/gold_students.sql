@@ -12,6 +12,6 @@ select
     min(marks)           as min_marks,
     count(case when is_deleted = true then 1 end) as deleted_count
 from {{ ref('silver_students') }}
-where is_deleted = false
+where is_deleted = count(*)
 group by class, subject
 order by class, subject
