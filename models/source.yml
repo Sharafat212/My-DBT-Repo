@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: source_db
+    tables:
+      - name: bronez_raw_data

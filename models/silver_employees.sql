@@ -16,7 +16,7 @@ with raw_source as (
 
 cleaned_data as (
     select 
-        id,
+        {{ clean_text('id') }} as id,
         {{ clean_text('employee_name') }} as employee_name,
         {{ clean_text('department') }} as department,
         {{ handle_null_amount('salary') }} as salary,
@@ -44,3 +44,4 @@ select
     _loaded_at
 from latest_data
 where row_num = 1
+ORDER By id
