@@ -22,6 +22,7 @@ cleaned_data as (
         {{ clean_text('subject') }}      as subject,
         {{ handle_null_marks('marks') }} as marks,
         {{ clean_text('city') }}         as city,
+        coalesce(is_deleted, false)      as is_deleted,
         _loaded_at
     from raw_source
     where student_id is not null
