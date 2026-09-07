@@ -42,6 +42,7 @@ select
     subject,
     marks,
     city,
+    is_deleted,
     _loaded_at
 from latest_data
 where row_num = 1
