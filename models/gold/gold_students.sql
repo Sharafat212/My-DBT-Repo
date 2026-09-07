@@ -11,5 +11,6 @@ select
     max(marks)          as max_marks,
     min(marks)           as min_marks
 from {{ ref('silver_students') }}
+where is_deleted = false
 group by class, subject
 order by class, subject
