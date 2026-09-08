@@ -20,7 +20,10 @@
 						"additionalColumns": [
 							{
 								"name": "province",
-								"value": "Punjab "
+								"value": {
+									"value": "Punjab\nSindh\nKPK\nBalochistan\ngb\n",
+									"type": "Expression"
+								}
 							}
 						],
 						"storeSettings": {
@@ -115,6 +118,17 @@
 								},
 								"sink": {
 									"name": "city",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "province",
+									"type": "String"
+								},
+								"sink": {
+									"name": "province",
 									"type": "String",
 									"physicalType": "String"
 								}
