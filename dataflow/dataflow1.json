@@ -55,7 +55,7 @@
 				"          subject = first(subject),",
 				"          marks = first(marks),",
 				"          city = first(city)) ~> aggregate1",
-				"aggregate1 sort(asc(ERROR_FUNCTION(''), true)) ~> sort1",
+				"aggregate1 sort(asc(student_id, true)) ~> sort1",
 				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
