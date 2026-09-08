@@ -27,6 +27,9 @@
 				},
 				{
 					"name": "aggregate1"
+				},
+				{
+					"name": "sort1"
 				}
 			],
 			"scriptLines": [
@@ -41,17 +44,19 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 derive(student_name = trim(student_name),",
-				"          class = trim(class),",
-				"          subject = trim(subject),",
-				"          city = trim(city)) ~> derivedColumn1",
+				"source1 derive(student_name = initCap(trim(student_name)),",
+				"          class = initCap(trim(class)),",
+				"          subject = initCap(trim(subject)),",
+				"          city = initCap(trim(city)),",
+				"          student_id = toInteger(trim(student_id))) ~> derivedColumn1",
 				"derivedColumn1 aggregate(groupBy(student_id),",
 				"     student_name = first(student_name),",
 				"          class = first(class),",
 				"          subject = first(subject),",
 				"          marks = first(marks),",
 				"          city = first(city)) ~> aggregate1",
-				"aggregate1 sink(allowSchemaDrift: true,",
+				"aggregate1 sort(asc(ERROR_FUNCTION(''), true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
