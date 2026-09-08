@@ -5,14 +5,82 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "ds_bronze_raw",
+						"type": "DatasetReference"
+					},
 					"name": "source1"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_gold",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "sort1"
+				},
+				{
+					"name": "aggregate1"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1"
+				"source(output(",
+				"          tracking_number as string,",
+				"          order_reference as string,",
+				"          booking_date as string,",
+				"          customer_name as string,",
+				"          contact_number as string,",
+				"          shipping_address as string,",
+				"          destination_city as string,",
+				"          item_description as string,",
+				"          quantity as string,",
+				"          cod_amount_pkr as string,",
+				"          payment_type as string,",
+				"          weight_kg as string,",
+				"          shipping_cost as string,",
+				"          delivery_status as string,",
+				"          assigned_rider as string,",
+				"          last_updated as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(customer_name = initCap(trim(customer_name)),",
+				"          destination_city = initCap(trim(destination_city)),",
+				"          payment_type = upper(trim(payment_type)),",
+				"          delivery_status = initCap(trim(delivery_status)),",
+				"          shipping_address = lower(trim(shipping_address))) ~> derivedColumn1",
+				"derivedColumn1 sort(asc(tracking_number, true)) ~> sort1",
+				"sort1 aggregate(groupBy(destination_city),",
+				"     total_orders = count(tracking_number),",
+				"          total_revenue = sum(toDecimal(shipping_cost))) ~> aggregate1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['gold_summary.csv'],",
+				"     truncate: true,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink2"
 			]
 		}
 	}
