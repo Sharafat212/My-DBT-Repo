@@ -1,0 +1,88 @@
+{
+	"name": "ds_bronze_raw",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "bronze_rawdata.csv",
+				"container": "bronze"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "tracking_number",
+				"type": "String"
+			},
+			{
+				"name": "order_reference",
+				"type": "String"
+			},
+			{
+				"name": "booking_date",
+				"type": "String"
+			},
+			{
+				"name": "customer_name",
+				"type": "String"
+			},
+			{
+				"name": "contact_number",
+				"type": "String"
+			},
+			{
+				"name": "shipping_address",
+				"type": "String"
+			},
+			{
+				"name": "destination_city",
+				"type": "String"
+			},
+			{
+				"name": "item_description",
+				"type": "String"
+			},
+			{
+				"name": "quantity",
+				"type": "String"
+			},
+			{
+				"name": "cod_amount_pkr",
+				"type": "String"
+			},
+			{
+				"name": "payment_type",
+				"type": "String"
+			},
+			{
+				"name": "weight_kg",
+				"type": "String"
+			},
+			{
+				"name": "shipping_cost",
+				"type": "String"
+			},
+			{
+				"name": "delivery_status",
+				"type": "String"
+			},
+			{
+				"name": "assigned_rider",
+				"type": "String"
+			},
+			{
+				"name": "last_updated",
+				"type": "String"
+			}
+		]
+	}
+}
