@@ -17,6 +17,12 @@
 				"typeProperties": {
 					"source": {
 						"type": "DelimitedTextSource",
+						"additionalColumns": [
+							{
+								"name": "province",
+								"value": "Punjab "
+							}
+						],
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
@@ -40,6 +46,80 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "student_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "student_id",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "student_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "student_name",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "class",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "class",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "subject",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "subject",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "marks",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "marks",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "city",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "city",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
