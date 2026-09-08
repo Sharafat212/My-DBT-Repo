@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "students_output.csv",
 				"container": "processed-data"
 			},
 			"columnDelimiter": ",",
