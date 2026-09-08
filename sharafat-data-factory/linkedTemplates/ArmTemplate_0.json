@@ -682,7 +682,7 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "dataflow1",
+						"name": "df_bronze_to_silver",
 						"type": "ExecuteDataFlow",
 						"dependsOn": [],
 						"policy": {
@@ -695,12 +695,13 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataflow": {
-								"referenceName": "dataflow1",
+								"referenceName": "df_bronze_to_silver",
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
 									"source1": {},
-									"sink1": {}
+									"sink1": {},
+									"sink2": {}
 								}
 							},
 							"staging": {},
@@ -718,7 +719,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
+				"[concat(variables('factoryId'), '/dataflows/df_bronze_to_silver')]"
 			]
 		}
 	]
