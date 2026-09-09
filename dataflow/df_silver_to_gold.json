@@ -13,7 +13,11 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "aggregate1"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          tracking_number as string,",
@@ -35,7 +39,12 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1"
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 aggregate(groupBy(assigned_rider),",
+				"     total_orders = count(1),",
+				"          total_shipping_cost = sum(shipping_cost),",
+				"          total_cod_amount = sum(cod_amount_pkr),",
+				"          avg_weight = avg(weight_kg)) ~> aggregate1"
 			]
 		}
 	}
