@@ -1,0 +1,24 @@
+{
+	"name": "master_pipline_scheduler",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "master_pipeline",
+					"type": "PipelineReference"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2026-09-09T18:00:00",
+				"timeZone": "Pakistan Standard Time"
+			}
+		}
+	}
+}
