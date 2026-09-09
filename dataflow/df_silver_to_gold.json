@@ -12,7 +12,16 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_gold",
+						"type": "DatasetReference"
+					},
+					"name": "sink1",
+					"description": "Add sink dataset gold(final)"
+				}
+			],
 			"transformations": [
 				{
 					"name": "aggregate1"
@@ -44,7 +53,11 @@
 				"     total_orders = count(1),",
 				"          total_shipping_cost = sum(shipping_cost),",
 				"          total_cod_amount = sum(cod_amount_pkr),",
-				"          avg_weight = avg(weight_kg)) ~> aggregate1"
+				"          avg_weight = avg(weight_kg)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
 		}
 	}
