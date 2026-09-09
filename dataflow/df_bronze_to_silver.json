@@ -18,14 +18,8 @@
 						"referenceName": "ds_silver",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
-				},
-				{
-					"dataset": {
-						"referenceName": "ds_gold",
-						"type": "DatasetReference"
-					},
-					"name": "sink2"
+					"name": "silver",
+					"description": "this is silver sink"
 				}
 			],
 			"transformations": [
@@ -34,9 +28,6 @@
 				},
 				{
 					"name": "sort1"
-				},
-				{
-					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -67,23 +58,10 @@
 				"          delivery_status = initCap(trim(delivery_status)),",
 				"          shipping_address = lower(trim(shipping_address))) ~> derivedColumn1",
 				"derivedColumn1 sort(asc(tracking_number, true)) ~> sort1",
-				"sort1 aggregate(groupBy(destination_city),",
-				"     total_orders = count(tracking_number),",
-				"          total_revenue = sum(toDecimal(shipping_cost))) ~> aggregate1",
 				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     partitionFileNames:['silver_clean_data.csv'],",
-				"     truncate: true,",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink1",
-				"aggregate1 sink(allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     partitionFileNames:['gold_summary.csv'],",
-				"     truncate: true,",
-				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true,",
-				"     partitionBy('hash', 1)) ~> sink2"
+				"     skipDuplicateMapOutputs: true) ~> silver"
 			]
 		}
 	}
