@@ -1,0 +1,191 @@
+{
+	"name": "pipeline_silver_to_gold",
+	"properties": {
+		"description": "this pipeline dependent on silver\n",
+		"activities": [
+			{
+				"name": "source-silver",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_silver",
+						"type": "DatasetReference",
+						"parameters": {
+							"containerName": "silver",
+							"fileName": "silver_clean_data.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_silver",
+						"type": "DatasetReference",
+						"parameters": {
+							"containerName": "silver",
+							"fileName": "silver_clean_data.csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "df_silver_to_gold",
+				"description": "ds_silver is our source",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [
+					{
+						"activity": "source-silver",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_silver_to_gold",
+						"type": "DataFlowReference",
+						"datasetParameters": {
+							"source1": {
+								"containerName": "silver",
+								"fileName": "silver_clean_data.csv"
+							},
+							"sink1": {
+								"containerName": "gold",
+								"fileName": "gold_summary.csv"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "final_sink",
+				"description": "gold final result",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "df_silver_to_gold",
+						"dependencyConditions": [
+							"Completed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "ds_gold",
+						"type": "DatasetReference",
+						"parameters": {
+							"containerName": "gold",
+							"fileName": "gold_summary.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_gold",
+						"type": "DatasetReference",
+						"parameters": {
+							"containerName": "gold",
+							"fileName": "gold_summary.csv"
+						}
+					}
+				]
+			}
+		],
+		"annotations": []
+	}
+}
