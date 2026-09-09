@@ -42,6 +42,33 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Send_Email_Notification",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Run_Pipeline_silver_Gold",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-02.northcentralus.logic.azure.com:443/workflows/9c149c33576442b99c87a76fa70590a8/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=KcslBN7XzmNzqAtSDCfz8To60tCspc4dRFYKsJKy7t4",
+					"body": {
+						"status": "Pipeline completed successfully"
+					}
+				}
 			}
 		],
 		"annotations": []
