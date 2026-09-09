@@ -12,7 +12,7 @@
 			},
 			"fileName": {
 				"type": "string",
-				"defaultValue": "silver_data.csv"
+				"defaultValue": "silver_clean_data.csv"
 			}
 		},
 		"annotations": [],
