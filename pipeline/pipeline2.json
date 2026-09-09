@@ -103,7 +103,7 @@
 						"referenceName": "ds_bronze_raw",
 						"type": "DatasetReference",
 						"parameters": {
-							"containerName": "bronze ",
+							"containerName": "bronze",
 							"fileName": "bronze_rawdata.csv"
 						}
 					}
