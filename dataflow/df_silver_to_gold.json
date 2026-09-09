@@ -9,7 +9,8 @@
 						"referenceName": "ds_silver",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "source2",
+					"description": "Add source dataset source is silver"
 				}
 			],
 			"sinks": [],
@@ -21,8 +22,8 @@
 			"scriptLines": [
 				"source(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 aggregate() ~> aggregate1"
+				"     ignoreNoFilesFound: false) ~> source2",
+				"source2 aggregate() ~> aggregate1"
 			]
 		}
 	}
