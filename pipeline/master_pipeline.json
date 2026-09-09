@@ -4,7 +4,7 @@
 		"description": "This is my master pipeline. \n1. pipeline2\n2. pipeline_silver_to_gold\n\nthese 2 pipelines included",
 		"activities": [
 			{
-				"name": "Run_Pipeline2 ",
+				"name": "Run_Pipeline2",
 				"description": "pipeline 2 is main run ho gi",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
@@ -25,7 +25,7 @@
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
-						"activity": "Run_Pipeline2 ",
+						"activity": "Run_Pipeline2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -75,13 +75,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Run_Pipeline_silver_Gold",
-						"dependencyConditions": [
-							"Failed"
-						]
-					},
-					{
-						"activity": "Run_Pipeline2 ",
+						"activity": "Run_Pipeline2",
 						"dependencyConditions": [
 							"Failed"
 						]
