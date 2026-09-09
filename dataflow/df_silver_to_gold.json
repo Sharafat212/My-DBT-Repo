@@ -9,21 +9,33 @@
 						"referenceName": "ds_silver",
 						"type": "DatasetReference"
 					},
-					"name": "source2",
-					"description": "Add source dataset source is silver"
+					"name": "source1"
 				}
 			],
 			"sinks": [],
-			"transformations": [
-				{
-					"name": "aggregate1"
-				}
-			],
+			"transformations": [],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          tracking_number as string,",
+				"          order_reference as string,",
+				"          booking_date as timestamp,",
+				"          customer_name as string,",
+				"          contact_number as string,",
+				"          shipping_address as string,",
+				"          destination_city as string,",
+				"          item_description as string,",
+				"          quantity as short,",
+				"          cod_amount_pkr as short,",
+				"          payment_type as string,",
+				"          weight_kg as double,",
+				"          shipping_cost as short,",
+				"          delivery_status as string,",
+				"          assigned_rider as string,",
+				"          last_updated as timestamp",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source2",
-				"source2 aggregate() ~> aggregate1"
+				"     ignoreNoFilesFound: false) ~> source1"
 			]
 		}
 	}
