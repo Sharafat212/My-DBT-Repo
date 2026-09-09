@@ -71,16 +71,10 @@
 				}
 			},
 			{
-				"name": "Send_Failure_Notification",
+				"name": "Failed_pipeline",
+				"description": "this for failed pipeline",
 				"type": "WebActivity",
-				"dependsOn": [
-					{
-						"activity": "Run_Pipeline2",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -91,10 +85,8 @@
 				"userProperties": [],
 				"typeProperties": {
 					"method": "POST",
-					"url": "https://prod-02.northcentralus.logic.azure.com:443/workflows/9c149c33576442b99c87a76fa70590a8/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=KcslBN7XzmNzqAtSDCfz8To60tCspc4dRFYKsJKy7t4",
-					"body": {
-						"status": "Pipeline Failed"
-					}
+					"url": "https://prod-28.northcentralus.logic.azure.com:443/workflows/1f75fac749334496813222fc9c9acf79/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=qollgBb6XIzd-t77rGN3rtGw1Qy7RZAe8Cg63h8buTo",
+					"body": "Pipeline Failed Try Again"
 				}
 			}
 		],
