@@ -5,10 +5,6 @@
 		"typeProperties": {
 			"sources": [
 				{
-					"dataset": {
-						"referenceName": "ds_bronze_students2",
-						"type": "DatasetReference"
-					},
 					"name": "source1"
 				}
 			],
@@ -20,15 +16,8 @@
 				}
 			],
 			"scriptLines": [
-				"source(output(",
-				"          {1} as string,",
-				"          Ali as string,",
-				"          Lahore as string,",
-				"          {2026-09-01} as string",
-				"     ),",
-				"     allowSchemaDrift: true,",
-				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1",
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false) ~> source1",
 				"source1 derive(column1 = ERROR_FUNCTION(''),",
 				"          column2 = ERROR_FUNCTION('')) ~> derivedColumn1"
 			]
