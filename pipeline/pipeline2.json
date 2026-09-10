@@ -203,7 +203,7 @@
 					"body": {
 						"PipelineName": "@{pipeline().Pipeline}",
 						"RunId": "@{pipeline().RunId}",
-						"ErrorMessage": "@{activity('Run_Pipeline2').error.message}"
+						"ErrorMessage": "Check activity run details in ADF Monitor for exact error."
 					}
 				}
 			}
