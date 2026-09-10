@@ -117,7 +117,7 @@
 					{
 						"activity": "Data flow1",
 						"dependencyConditions": [
-							"Completed"
+							"Succeeded"
 						]
 					}
 				],
