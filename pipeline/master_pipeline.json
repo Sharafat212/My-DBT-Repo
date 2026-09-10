@@ -71,7 +71,7 @@
 				}
 			},
 			{
-				"name": "failed",
+				"name": "Generic_failed_activity",
 				"description": "this is for failed",
 				"type": "WebActivity",
 				"dependsOn": [
@@ -96,15 +96,22 @@
 					"body": {
 						"PipelineName": "@{pipeline().Pipeline}",
 						"RunId": "@{pipeline().RunId}",
-						"ErrorMessage": "@{activity('Run_Pipeline2').error.message}"
+						"ErrorMessage": "Check activity run details in ADF Monitor for exact error."
 					}
 				}
 			},
 			{
-				"name": "run_pipeline_silver_to_gold",
+				"name": "Generic_failed_activity_copy1",
 				"description": "this is for failed",
 				"type": "WebActivity",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Run_Pipeline_silver_Gold",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -119,7 +126,7 @@
 					"body": {
 						"PipelineName": "@{pipeline().Pipeline}",
 						"RunId": "@{pipeline().RunId}",
-						"ErrorMessage": "@{activity('Run_Pipeline2').error.message}"
+						"ErrorMessage": "Check activity run details in ADF Monitor for exact error."
 					}
 				}
 			}
