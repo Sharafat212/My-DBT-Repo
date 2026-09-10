@@ -190,7 +190,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Data flow1",
+						"activity": "source",
 						"dependencyConditions": [
 							"Failed"
 						]
