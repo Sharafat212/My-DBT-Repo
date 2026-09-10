@@ -1,0 +1,40 @@
+{
+	"name": "ds_bronze_students2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "raw_students",
+				"fileSystem": "bronze1"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "1",
+				"type": "String"
+			},
+			{
+				"name": "Ali",
+				"type": "String"
+			},
+			{
+				"name": "Lahore",
+				"type": "String"
+			},
+			{
+				"name": "2026-09-01",
+				"type": "String"
+			}
+		]
+	}
+}
