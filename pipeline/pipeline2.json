@@ -81,6 +81,200 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "tracking_number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "tracking_number",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "order_reference",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "order_reference",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "booking_date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "booking_date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "customer_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "customer_name",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "contact_number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "contact_number",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipping_address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "shipping_address",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destination_city",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destination_city",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "item_description",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "item_description",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "cod_amount_pkr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cod_amount_pkr",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "payment_type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "payment_type",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "weight_kg",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "weight_kg",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipping_cost",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "shipping_cost",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "delivery_status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "delivery_status",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "assigned_rider",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "assigned_rider",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "last_updated",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "last_updated",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
@@ -156,6 +350,199 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "tracking_number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "tracking_number",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "order_reference",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "order_reference",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "booking_date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "booking_date",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "customer_name",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "client_name",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "contact_number",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "contact_number",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipping_address",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "shipping_address",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "destination_city",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "destination_city",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "item_description",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "item_description",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "quantity",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "cod_amount_pkr",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "cod_amount_pkr",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "payment_type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "payment_type",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "weight_kg",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "weight_kg",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "shipping_cost",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "shipping_cost",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "delivery_status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "delivery_status",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "assigned_rider",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "assigned_rider",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "last_updated",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "last_updated",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
