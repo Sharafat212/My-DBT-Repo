@@ -566,7 +566,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"containerName": "silver",
-							"fileName": "silver_data.csv"
+							"fileName": "silver_clean_data.csv"
 						}
 					}
 				]
