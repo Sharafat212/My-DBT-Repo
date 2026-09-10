@@ -7,7 +7,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "source",
+						"activity": "source ",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -44,7 +44,7 @@
 				}
 			},
 			{
-				"name": "source",
+				"name": "source ",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
