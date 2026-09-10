@@ -93,7 +93,7 @@
 						"referenceName": "ds_bronze_raw",
 						"type": "DatasetReference",
 						"parameters": {
-							"containerName": "bronze ",
+							"containerName": "bronze",
 							"fileName": "bronze_rawdata.csv"
 						}
 					}
@@ -183,6 +183,36 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "pipeline2_failed",
+				"description": "this is for failed",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "Data flow1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"url": "https://prod-28.northcentralus.logic.azure.com:443/workflows/1f75fac749334496813222fc9c9acf79/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=qollgBb6XIzd-t77rGN3rtGw1Qy7RZAe8Cg63h8buTo",
+					"body": {
+						"PipelineName": "@{pipeline().Pipeline}",
+						"RunId": "@{pipeline().RunId}",
+						"ErrorMessage": "@{activity('Run_Pipeline2').error.message}"
+					}
+				}
 			}
 		],
 		"annotations": []
