@@ -52,7 +52,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 derive(customer_name = initCap(trim(customer_name)),",
+				"source1 derive(client_name = initCap(trim(customer_name)),",
 				"          destination_city = initCap(trim(destination_city)),",
 				"          payment_type = upper(trim(payment_type)),",
 				"          delivery_status = initCap(trim(delivery_status)),",
