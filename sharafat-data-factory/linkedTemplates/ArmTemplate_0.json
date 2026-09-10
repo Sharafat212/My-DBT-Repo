@@ -119,13 +119,29 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"containerName": {
+						"type": "string",
+						"defaultValue": "bronze "
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "bronze_rawdata.csv"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "bronze_rawdata.csv",
-						"container": "bronze"
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().containerName",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -212,12 +228,29 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"containerName": {
+						"type": "string",
+						"defaultValue": "gold"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "gold_summary.csv"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "gold"
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().containerName",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -239,12 +272,29 @@
 					"referenceName": "AzureBlobStorage1",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"containerName": {
+						"type": "string",
+						"defaultValue": "silver"
+					},
+					"fileName": {
+						"type": "string",
+						"defaultValue": "silver_clean_data.csv"
+					}
+				},
 				"annotations": [],
 				"type": "DelimitedText",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "silver"
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"container": {
+							"value": "@dataset().containerName",
+							"type": "Expression"
+						}
 					},
 					"columnDelimiter": ",",
 					"escapeChar": "\\",
@@ -603,14 +653,8 @@
 								"referenceName": "ds_silver",
 								"type": "DatasetReference"
 							},
-							"name": "sink1"
-						},
-						{
-							"dataset": {
-								"referenceName": "ds_gold",
-								"type": "DatasetReference"
-							},
-							"name": "sink2"
+							"name": "silver",
+							"description": "this is silver sink"
 						}
 					],
 					"transformations": [
@@ -619,9 +663,6 @@
 						},
 						{
 							"name": "sort1"
-						},
-						{
-							"name": "aggregate1"
 						}
 					],
 					"scriptLines": [
@@ -652,28 +693,84 @@
 						"          delivery_status = initCap(trim(delivery_status)),",
 						"          shipping_address = lower(trim(shipping_address))) ~> derivedColumn1",
 						"derivedColumn1 sort(asc(tracking_number, true)) ~> sort1",
-						"sort1 aggregate(groupBy(destination_city),",
-						"     total_orders = count(tracking_number),",
-						"          total_revenue = sum(toDecimal(shipping_cost))) ~> aggregate1",
 						"sort1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
-						"     partitionFileNames:['silver_clean_data.csv'],",
-						"     truncate: true,",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1",
-						"aggregate1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     partitionFileNames:['gold_summary.csv'],",
-						"     truncate: true,",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink2"
+						"     skipDuplicateMapOutputs: true) ~> silver"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_bronze_raw')]",
+				"[concat(variables('factoryId'), '/datasets/ds_silver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_silver_to_gold')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_gold",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "Add sink dataset gold(final)"
+						}
+					],
+					"transformations": [
+						{
+							"name": "aggregate1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          tracking_number as string,",
+						"          order_reference as string,",
+						"          booking_date as timestamp,",
+						"          customer_name as string,",
+						"          contact_number as string,",
+						"          shipping_address as string,",
+						"          destination_city as string,",
+						"          item_description as string,",
+						"          quantity as short,",
+						"          cod_amount_pkr as short,",
+						"          payment_type as string,",
+						"          weight_kg as double,",
+						"          shipping_cost as short,",
+						"          delivery_status as string,",
+						"          assigned_rider as string,",
+						"          last_updated as timestamp",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 aggregate(groupBy(assigned_rider),",
+						"     total_orders = count(1),",
+						"          total_shipping_cost = sum(shipping_cost),",
+						"          total_cod_amount = sum(cod_amount_pkr),",
+						"          avg_weight = avg(weight_kg)) ~> aggregate1",
+						"aggregate1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_silver')]",
 				"[concat(variables('factoryId'), '/datasets/ds_gold')]"
 			]
@@ -685,9 +782,16 @@
 			"properties": {
 				"activities": [
 					{
-						"name": "df_bronze_to_silver",
+						"name": "Data flow1",
 						"type": "ExecuteDataFlow",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "source",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "0.12:00:00",
 							"retry": 0,
@@ -702,9 +806,14 @@
 								"type": "DataFlowReference",
 								"parameters": {},
 								"datasetParameters": {
-									"source1": {},
-									"sink1": {},
-									"sink2": {}
+									"source1": {
+										"containerName": "bronze",
+										"fileName": "bronze_rawdata.csv"
+									},
+									"silver": {
+										"containerName": "silver",
+										"fileName": "silver_data.csv"
+									}
 								}
 							},
 							"staging": {},
@@ -714,6 +823,147 @@
 							},
 							"traceLevel": "Fine"
 						}
+					},
+					{
+						"name": "source",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_bronze_raw",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "bronze",
+									"fileName": "bronze_rawdata.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_bronze_raw",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "bronze",
+									"fileName": "bronze_rawdata.csv"
+								}
+							}
+						]
+					},
+					{
+						"name": "sink1",
+						"description": "silver data sink",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Data flow1",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "FlattenHierarchy"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_silver",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "silver",
+									"fileName": "silver_clean_data.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_silver",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "silver",
+									"fileName": "silver_data.csv"
+								}
+							}
+						]
 					}
 				],
 				"policy": {
@@ -722,7 +972,332 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/df_bronze_to_silver')]"
+				"[concat(variables('factoryId'), '/dataflows/df_bronze_to_silver')]",
+				"[concat(variables('factoryId'), '/datasets/ds_bronze_raw')]",
+				"[concat(variables('factoryId'), '/datasets/ds_silver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_silver_to_gold')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this pipeline dependent on silver\n",
+				"activities": [
+					{
+						"name": "source-silver",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_silver",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "silver",
+									"fileName": "silver_clean_data.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_silver",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "silver",
+									"fileName": "silver_clean_data.csv"
+								}
+							}
+						]
+					},
+					{
+						"name": "df_silver_to_gold",
+						"description": "ds_silver is our source",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "source-silver",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver_to_gold",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {
+										"containerName": "silver",
+										"fileName": "silver_clean_data.csv"
+									},
+									"sink1": {
+										"containerName": "gold",
+										"fileName": "gold_summary.csv"
+									}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "final_sink",
+						"description": "gold final result",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "df_silver_to_gold",
+								"dependencyConditions": [
+									"Completed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings",
+									"copyBehavior": "MergeFiles"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "ds_gold",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "gold",
+									"fileName": "gold_summary.csv"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "ds_gold",
+								"type": "DatasetReference",
+								"parameters": {
+									"containerName": "gold",
+									"fileName": "gold_summary.csv"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_silver')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver_to_gold')]",
+				"[concat(variables('factoryId'), '/datasets/ds_gold')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/master_pipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This is my master pipeline. \n1. pipeline2\n2. pipeline_silver_to_gold\n\nthese 2 pipelines included",
+				"activities": [
+					{
+						"name": "Run_Pipeline2",
+						"description": "pipeline 2 is main run ho gi",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pipeline2",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Run_Pipeline_silver_Gold",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Run_Pipeline2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "pipeline_silver_to_gold",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Send_Email_Notification",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Run_Pipeline_silver_Gold",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod-02.northcentralus.logic.azure.com:443/workflows/9c149c33576442b99c87a76fa70590a8/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=KcslBN7XzmNzqAtSDCfz8To60tCspc4dRFYKsJKy7t4",
+							"body": {
+								"status": "Pipeline completed successfully"
+							}
+						}
+					},
+					{
+						"name": "failed",
+						"description": "this is for failed",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Run_Pipeline2",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod-28.northcentralus.logic.azure.com:443/workflows/1f75fac749334496813222fc9c9acf79/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=qollgBb6XIzd-t77rGN3rtGw1Qy7RZAe8Cg63h8buTo",
+							"body": {
+								"PipelineName": "@{pipeline().Pipeline}",
+								"RunId": "@{pipeline().RunId}",
+								"ErrorMessage": "@{activity('Run_Pipeline2').error.message}"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/pipeline2')]",
+				"[concat(variables('factoryId'), '/pipelines/pipeline_silver_to_gold')]"
 			]
 		},
 		{
@@ -747,13 +1322,42 @@
 						"frequency": "Day",
 						"interval": 1,
 						"startTime": "2026-09-09T11:00:00",
-						"timeZone": "Pakistan Standard Time",
-						"schedule": {}
+						"timeZone": "Pakistan Standard Time"
 					}
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/pipeline2')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/master_pipline_scheduler')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "master_pipeline",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Day",
+						"interval": 1,
+						"startTime": "2026-09-09T18:00:00",
+						"timeZone": "Pakistan Standard Time"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/master_pipeline')]"
 			]
 		}
 	]
