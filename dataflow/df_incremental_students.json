@@ -5,21 +5,59 @@
 		"typeProperties": {
 			"sources": [
 				{
+					"dataset": {
+						"referenceName": "ds_bronze1_to_silver1",
+						"type": "DatasetReference"
+					},
 					"name": "source1"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_bronze1_to_silver1",
+						"type": "DatasetReference"
+					},
+					"name": "silver1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "derivedColumn1",
 					"description": "Creating/updating the columns 'tracking_number, order_reference, booking_date, customer_name, "
+				},
+				{
+					"name": "sort1"
 				}
 			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
-				"     validateSchema: false) ~> source1",
-				"source1 derive(column1 = ERROR_FUNCTION(''),",
-				"          column2 = ERROR_FUNCTION('')) ~> derivedColumn1"
+				"source(output(",
+				"          order_id as string,",
+				"          customer_name as string,",
+				"          city as string,",
+				"          order_date as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source1 derive(order_id = iif(isNull(order_id), '', upper(trim(order_id))),",
+				"          customer_name = iif(isNull(customer_name), '', trim(customer_name)),",
+				"          city = iif(isNull(customer_name), '', trim(city)),",
+				"          order_date = trim(order_date)) ~> derivedColumn1",
+				"derivedColumn1 sort(asc(order_id, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          order_id as string,",
+				"          customer_name as string,",
+				"          city as string,",
+				"          order_date as string",
+				"     ),",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> silver1"
 			]
 		}
 	}
