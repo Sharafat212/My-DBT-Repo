@@ -15,7 +15,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_bronze1_to_silver1",
+						"referenceName": "ds_silver1",
 						"type": "DatasetReference"
 					},
 					"name": "silver1"
@@ -52,12 +52,6 @@
 				"     city = count(city)) ~> aggregate1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     input(",
-				"          order_id as string,",
-				"          customer_name as string,",
-				"          city as string,",
-				"          order_date as string",
-				"     ),",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
