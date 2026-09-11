@@ -3,9 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Source_data_increment",
-				"description": "use for incremental",
-				"type": "Copy",
+				"name": "df_bronze_to_silver",
+				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -16,26 +15,12 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings",
-							"copyBehavior": "MergeFiles"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
 					},
-					"enableStaging": false
-				},
-				"outputs": [
-					{
-						"referenceName": "silver1cleaned",
-						"type": "DatasetReference"
-					}
-				]
+					"traceLevel": "Fine"
+				}
 			}
 		],
 		"annotations": []
