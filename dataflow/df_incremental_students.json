@@ -28,6 +28,9 @@
 				},
 				{
 					"name": "sort1"
+				},
+				{
+					"name": "aggregate1"
 				}
 			],
 			"scriptLines": [
@@ -42,10 +45,11 @@
 				"     ignoreNoFilesFound: false) ~> source1",
 				"source1 derive(order_id = iif(isNull(order_id), '', upper(trim(order_id))),",
 				"          customer_name = iif(isNull(customer_name), '', trim(customer_name)),",
-				"          city = iif(isNull(customer_name), '', trim(city)),",
+				"          city = iif(isNull(city), '', trim(city)),",
 				"          order_date = trim(order_date)) ~> derivedColumn1",
 				"derivedColumn1 sort(asc(order_id, true)) ~> sort1",
-				"sort1 sink(allowSchemaDrift: true,",
+				"sort1 aggregate(groupBy(order_id)) ~> aggregate1",
+				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          order_id as string,",
