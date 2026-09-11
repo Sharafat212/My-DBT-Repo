@@ -14,6 +14,10 @@
 			],
 			"sinks": [
 				{
+					"dataset": {
+						"referenceName": "ds_gold1",
+						"type": "DatasetReference"
+					},
 					"name": "sink1",
 					"description": "gold sink"
 				}
@@ -31,6 +35,9 @@
 				"     ignoreNoFilesFound: false) ~> source1",
 				"source1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> sink1"
 			]
