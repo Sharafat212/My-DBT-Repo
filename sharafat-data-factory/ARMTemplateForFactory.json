@@ -10,6 +10,14 @@
 		"AzureBlobStorage1_connectionString": {
 			"type": "secureString",
 			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureDataLakeStorage1_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage1'"
+		},
+		"AzureDataLakeStorage1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://blobstoragegen2001.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -94,7 +102,7 @@
 						}
 					},
 					{
-						"name": "failed",
+						"name": "Generic_failed_activity",
 						"description": "this is for failed",
 						"type": "WebActivity",
 						"dependsOn": [
@@ -120,7 +128,38 @@
 							"body": {
 								"PipelineName": "@{pipeline().Pipeline}",
 								"RunId": "@{pipeline().RunId}",
-								"ErrorMessage": "@{activity('Run_Pipeline2').error.message}"
+								"ErrorMessage": "Check activity run details in ADF Monitor for exact error."
+							}
+						}
+					},
+					{
+						"name": "Generic_failed_activity_copy1",
+						"description": "this is for failed",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Run_Pipeline_silver_Gold",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod-28.northcentralus.logic.azure.com:443/workflows/1f75fac749334496813222fc9c9acf79/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=qollgBb6XIzd-t77rGN3rtGw1Qy7RZAe8Cg63h8buTo",
+							"body": {
+								"PipelineName": "@{pipeline().Pipeline}",
+								"RunId": "@{pipeline().RunId}",
+								"ErrorMessage": "Check activity run details in ADF Monitor for exact error."
 							}
 						}
 					}
@@ -393,6 +432,200 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "tracking_number",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tracking_number",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "order_reference",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "order_reference",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "booking_date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "booking_date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customer_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "customer_name",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "contact_number",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "contact_number",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipping_address",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "shipping_address",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destination_city",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destination_city",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "item_description",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "item_description",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "quantity",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "quantity",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "cod_amount_pkr",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cod_amount_pkr",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "payment_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "payment_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "weight_kg",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "weight_kg",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipping_cost",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "shipping_cost",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "delivery_status",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "delivery_status",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "assigned_rider",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "assigned_rider",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "last_updated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "last_updated",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -429,7 +662,7 @@
 							{
 								"activity": "Data flow1",
 								"dependencyConditions": [
-									"Completed"
+									"Succeeded"
 								]
 							}
 						],
@@ -457,7 +690,7 @@
 								"type": "DelimitedTextSink",
 								"storeSettings": {
 									"type": "AzureBlobStorageWriteSettings",
-									"copyBehavior": "FlattenHierarchy"
+									"copyBehavior": "MergeFiles"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
@@ -468,6 +701,199 @@
 							"enableStaging": false,
 							"translator": {
 								"type": "TabularTranslator",
+								"mappings": [
+									{
+										"source": {
+											"name": "tracking_number",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "tracking_number",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "order_reference",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "order_reference",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "booking_date",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "booking_date",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "customer_name",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "client_name",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "contact_number",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "contact_number",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipping_address",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "shipping_address",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "destination_city",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "destination_city",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "item_description",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "item_description",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "quantity",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "quantity",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "cod_amount_pkr",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "cod_amount_pkr",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "payment_type",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "payment_type",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "weight_kg",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "weight_kg",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "shipping_cost",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "shipping_cost",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "delivery_status",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "delivery_status",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "assigned_rider",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "assigned_rider",
+											"type": "String",
+											"physicalType": "String"
+										}
+									},
+									{
+										"source": {
+											"name": "last_updated",
+											"type": "String",
+											"physicalType": "String"
+										},
+										"sink": {
+											"name": "last_updated",
+											"type": "String",
+											"physicalType": "String"
+										}
+									}
+								],
 								"typeConversion": true,
 								"typeConversionSettings": {
 									"allowDataTruncation": true,
@@ -491,10 +917,41 @@
 								"type": "DatasetReference",
 								"parameters": {
 									"containerName": "silver",
-									"fileName": "silver_data.csv"
+									"fileName": "silver_clean_data.csv"
 								}
 							}
 						]
+					},
+					{
+						"name": "pipeline2_failed",
+						"description": "this is for failed",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "source",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod-28.northcentralus.logic.azure.com:443/workflows/1f75fac749334496813222fc9c9acf79/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=qollgBb6XIzd-t77rGN3rtGw1Qy7RZAe8Cg63h8buTo",
+							"body": {
+								"PipelineName": "@{pipeline().Pipeline}",
+								"RunId": "@{pipeline().RunId}",
+								"ErrorMessage": "Check activity run details in ADF Monitor for exact error."
+							}
+						}
 					}
 				],
 				"policy": {
@@ -506,6 +963,90 @@
 				"[concat(variables('factoryId'), '/dataflows/df_bronze_to_silver')]",
 				"[concat(variables('factoryId'), '/datasets/ds_bronze_raw')]",
 				"[concat(variables('factoryId'), '/datasets/ds_silver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_incremental')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "df_bronze_to_silver",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_incremental_students",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"silver1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					},
+					{
+						"name": "df_silver_to_gold",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [
+							{
+								"activity": "df_bronze_to_silver",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "df_silver1_to_gold1",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"source1": {},
+									"sink1": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/df_incremental_students')]",
+				"[concat(variables('factoryId'), '/dataflows/df_silver1_to_gold1')]"
 			]
 		},
 		{
@@ -794,6 +1335,52 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_bronze1_to_silver1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileName": "part-00000-tid-8347419881995134820-ba013fd4-8b0d-4ab5-bc8c-5acf29f8ec58-130-1-c000.csv",
+						"folderPath": "raw_orders",
+						"fileSystem": "bronze1"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "order_id",
+						"type": "String"
+					},
+					{
+						"name": "customer_name",
+						"type": "String"
+					},
+					{
+						"name": "city",
+						"type": "String"
+					},
+					{
+						"name": "order_date",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_bronze_raw')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -947,6 +1534,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_gold1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "gold_1",
+						"fileSystem": "gold1"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_silver')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -991,6 +1606,34 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_silver1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "silver1_output",
+						"fileSystem": "silver1"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/processed_data')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -1016,6 +1659,34 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/silver1cleaned')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "silver_delta_table/_delta_log",
+						"fileSystem": "silver1"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage1')]"
 			]
 		},
 		{
@@ -1080,6 +1751,23 @@
 				"type": "AzureBlobStorage",
 				"typeProperties": {
 					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobFS",
+				"typeProperties": {
+					"url": "[parameters('AzureDataLakeStorage1_properties_typeProperties_url')]",
+					"accountKey": {
+						"type": "SecureString",
+						"value": "[parameters('AzureDataLakeStorage1_accountKey')]"
+					}
 				}
 			},
 			"dependsOn": []
@@ -1272,7 +1960,7 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 derive(customer_name = initCap(trim(customer_name)),",
+						"source1 derive(client_name = initCap(trim(customer_name)),",
 						"          destination_city = initCap(trim(destination_city)),",
 						"          payment_type = upper(trim(payment_type)),",
 						"          delivery_status = initCap(trim(delivery_status)),",
@@ -1288,6 +1976,130 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/ds_bronze_raw')]",
 				"[concat(variables('factoryId'), '/datasets/ds_silver')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_incremental_students')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_bronze1_to_silver1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_silver1",
+								"type": "DatasetReference"
+							},
+							"name": "silver1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1",
+							"description": "Creating/updating the columns 'tracking_number, order_reference, booking_date, customer_name, "
+						},
+						{
+							"name": "sort1"
+						},
+						{
+							"name": "aggregate1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          order_id as string,",
+						"          customer_name as string,",
+						"          city as string,",
+						"          order_date as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 derive(order_id = iif(isNull(order_id), '', upper(trim(order_id))),",
+						"          customer_name = iif(isNull(customer_name), '', trim(customer_name)),",
+						"          city = iif(isNull(city), '', trim(city)),",
+						"          order_date = trim(order_date)) ~> derivedColumn1",
+						"aggregate1 sort(asc(order_id, true)) ~> sort1",
+						"derivedColumn1 aggregate(groupBy(order_id,",
+						"          customer_name,",
+						"          city,",
+						"          order_date),",
+						"     {first(order_id)} = count(order_id)) ~> aggregate1",
+						"sort1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> silver1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_bronze1_to_silver1')]",
+				"[concat(variables('factoryId'), '/datasets/ds_silver1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/df_silver1_to_gold1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_bronze1_to_silver1",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_gold1",
+								"type": "DatasetReference"
+							},
+							"name": "sink1",
+							"description": "gold sink"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          order_id as string,",
+						"          customer_name as string,",
+						"          city as string,",
+						"          order_date as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> sink1"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_bronze1_to_silver1')]",
+				"[concat(variables('factoryId'), '/datasets/ds_gold1')]"
 			]
 		},
 		{
