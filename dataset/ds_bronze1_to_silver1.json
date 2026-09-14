@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "part-00000-tid-8347419881995134820-ba013fd4-8b0d-4ab5-bc8c-5acf29f8ec58-130-1-c000.csv",
 				"folderPath": "raw_orders",
 				"fileSystem": "bronze1"
 			},
