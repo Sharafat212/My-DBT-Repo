@@ -30,7 +30,10 @@
 					"name": "sort1"
 				},
 				{
-					"name": "aggregate1"
+					"name": "window1"
+				},
+				{
+					"name": "filter1"
 				}
 			],
 			"scriptLines": [
@@ -47,11 +50,14 @@
 				"          customer_name = iif(isNull(customer_name), '', trim(customer_name)),",
 				"          city = iif(isNull(city), '', trim(city)),",
 				"          order_date = trim(order_date)) ~> derivedColumn1",
-				"aggregate1 sort(asc(order_id, true)) ~> sort1",
-				"derivedColumn1 aggregate(groupBy(order_id,",
+				"filter1 sort(asc(order_id, true)) ~> sort1",
+				"derivedColumn1 window(over(order_id,",
 				"          customer_name,",
 				"          city,",
-				"          order_date)) ~> aggregate1",
+				"          order_date),",
+				"     asc(order_id, true),",
+				"     row_num = rowNumber()) ~> window1",
+				"window1 filter(row_num == 1) ~> filter1",
 				"sort1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     partitionFileNames:['Silver1_overwrite'],",
