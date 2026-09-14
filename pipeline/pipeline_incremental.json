@@ -7,7 +7,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "Notebook1",
+						"activity": "Job1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -65,8 +65,8 @@
 				}
 			},
 			{
-				"name": "Notebook1",
-				"type": "DatabricksNotebook",
+				"name": "Job1",
+				"type": "DatabricksJob",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -77,7 +77,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"notebookPath": "/Users/sharafatboss8@gmail.com/Incremental_ADF"
+					"jobId": {
+						"value": "213622780075047",
+						"type": "Expression"
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "AzureDatabricks1",
