@@ -1,6 +1,7 @@
 {
-	"name": "pipeline_gold_prices",
+	"name": "pipeline_gold_ingestion",
 	"properties": {
+		"description": "APIs ",
 		"activities": [
 			{
 				"name": "Copy_GoldPrices",
