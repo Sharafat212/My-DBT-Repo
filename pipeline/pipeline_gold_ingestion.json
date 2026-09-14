@@ -35,7 +35,252 @@
 							"type": "JsonWriteSettings"
 						}
 					},
-					"enableStaging": false
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['14 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['14 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['13 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['13 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['12 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['12 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['11 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['11 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['10 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['10 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['09 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['09 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['08 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['08 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['07 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['07 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['06 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['06 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['05 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['05 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['04 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['04 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['03 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['03 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['02 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['02 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['01 Sep 2026']"
+								},
+								"sink": {
+									"path": "$['01 Sep 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['31 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['31 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['30 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['30 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['29 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['29 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['28 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['28 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['27 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['27 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['26 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['26 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['25 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['25 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['24 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['24 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['23 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['23 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['22 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['22 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['21 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['21 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['20 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['20 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['19 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['19 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['18 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['18 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['17 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['17 Aug 2026']"
+								}
+							},
+							{
+								"source": {
+									"path": "$['16 Aug 2026']"
+								},
+								"sink": {
+									"path": "$['16 Aug 2026']"
+								}
+							}
+						]
+					}
 				},
 				"inputs": [
 					{
