@@ -13,11 +13,24 @@
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "CountByDate"
+				}
+			],
 			"scriptLines": [
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          order_id as string,",
+				"          customer_name as string,",
+				"          city as string,",
+				"          order_date as string,",
+				"          row_num as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> silvertogold"
+				"     ignoreNoFilesFound: false) ~> silvertogold",
+				"silvertogold aggregate(groupBy(order_date),",
+				"     total_orders = count(1)) ~> CountByDate"
 			]
 		}
 	}
