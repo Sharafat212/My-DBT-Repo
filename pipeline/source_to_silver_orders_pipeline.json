@@ -55,7 +55,7 @@
 								"fileName": "silver_clean_data.csv"
 							},
 							"sink1": {
-								"containerName": "gold",
+								"containerName": "goldorder1",
 								"fileName": "gold_summary.csv"
 							}
 						}
