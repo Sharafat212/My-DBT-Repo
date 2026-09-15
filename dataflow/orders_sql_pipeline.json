@@ -12,8 +12,26 @@
 					"name": "source1"
 				}
 			],
-			"sinks": [],
-			"transformations": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_orders",
+						"type": "DatasetReference"
+					},
+					"name": "SilverSink"
+				}
+			],
+			"transformations": [
+				{
+					"name": "CleanColumns"
+				},
+				{
+					"name": "RemoveDuplicates"
+				},
+				{
+					"name": "FilterUnique"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          order_id as integer,",
@@ -24,7 +42,27 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
-				"     format: 'table') ~> source1"
+				"     format: 'table') ~> source1",
+				"source1 derive(customer_name = upper(left(trim(customer_name),1)) + lower(substring(trim(customer_name),2,length(trim(customer_name))-1)),",
+				"          city = upper(left(trim(city),1)) + lower(substring(trim(city),2,length(trim(city))-1)),",
+				"          order_date = trim(order_date)) ~> CleanColumns",
+				"CleanColumns window(over(order_id,",
+				"          customer_name,",
+				"          city,",
+				"          order_date),",
+				"     asc(order_id, true),",
+				"     row_num = rowNumber()) ~> RemoveDuplicates",
+				"RemoveDuplicates filter(row_num == 1) ~> FilterUnique",
+				"FilterUnique sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     partitionFileNames:['silver_orders.csv'],",
+				"     truncate: true,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> SilverSink"
 			]
 		}
 	}
