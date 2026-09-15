@@ -1,5 +1,5 @@
 {
-	"name": "silver_to_gold_orders",
+	"name": "df_silver_to_gold_orders",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
