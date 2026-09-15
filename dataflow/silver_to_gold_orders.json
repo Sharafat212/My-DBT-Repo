@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_silver_orders",
+						"referenceName": "ds_silver_gold",
 						"type": "DatasetReference"
 					},
 					"name": "silvertogold"
