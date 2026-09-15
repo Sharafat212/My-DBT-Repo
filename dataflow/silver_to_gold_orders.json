@@ -1,0 +1,24 @@
+{
+	"name": "silver_to_gold_orders",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_silver_orders",
+						"type": "DatasetReference"
+					},
+					"name": "silvertogold"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> silvertogold"
+			]
+		}
+	}
+}
