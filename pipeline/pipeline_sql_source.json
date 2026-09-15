@@ -1,0 +1,34 @@
+{
+	"name": "pipeline_sql_source",
+	"properties": {
+		"activities": [
+			{
+				"name": "CreateSourceTable",
+				"type": "Script",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": "CREATE TABLE orders_source (\n    order_id INT,\n    customer_name VARCHAR(100),\n    city VARCHAR(100),\n    order_date VARCHAR(50)\n);\n\nINSERT INTO orders_source (order_id, customer_name, city, order_date) VALUES\n(1, 'Ali', 'Lahore', '2026-09-01'),\n(2, 'sara', 'karachi', '2026-09-01'),\n(3, 'Ahmed', 'Islamabad', '2026-09-02'),\n(4, ' Bilal ', 'Multan', '2026-09-02'),\n(5, 'Zara', 'PESHAWAR', '2026-09-03'),\n(6, 'Hassan', 'Quetta', '2026-09-03'),\n(7, 'Ayesha', 'Lahore', '2026-09-04'),\n(8, 'Usman', 'Karachi', NULL),\n(9, 'Fatima', 'Islamabad', '2026-09-05'),\n(10, 'Omar', 'Multan', '2026-09-05'),\n(1, 'Ali', 'Lahore', '2026-09-01'),  -- Duplicate row\n(11, NULL, 'Sialkot', '2026-09-06');  -- Missing customer name"
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
